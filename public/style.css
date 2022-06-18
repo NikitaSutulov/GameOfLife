@@ -15,7 +15,7 @@ body
     font-family: Verdana;
     font-weight: bold;
 }
-.maindiv
+.mainDiv
 {
     margin: 0;
     padding: 0;
@@ -25,7 +25,7 @@ body
     color: white;
     height: 920px;
 }
-.canvasdiv
+.canvasDiv
 {
     width: 920px;
     height: 920px;
@@ -34,12 +34,12 @@ body
     grid-row-end: 2;
     background-color: #222;
 }
-.statsdiv
+.statsDiv
 {
     grid-column: 2;
     grid-row: 1;
 }
-.buttonsdiv
+.buttonsDiv
 {
     grid-column: 2;
     grid-row: 2;
@@ -49,8 +49,10 @@ body
     display: grid;
     grid-auto-columns: 1fr 1fr 1fr 1fr;
     grid-auto-rows: 1fr 1fr;
+    margin-top: 1%;
+    margin-bottom: 1%;
 }
-#slider
+#speedSlider
 {
     width: 99%;
 }
@@ -62,21 +64,31 @@ body
     font-weight: bold;
     font-size: 20px;
 }
-#startbutton
+#startButton
 {
     grid-column-start: 1;
     grid-column-end: 2;
     grid-row: 1;
 }
-#pausebutton
+#pauseButton
 {
     grid-column-start: 3;
     grid-column-end: 4;
     grid-row: 1;
 }
-#resetbutton
+#resetButton
 {
     grid-column-start: 2;
     grid-column-end: 3;
     grid-row: 2;
+}
+#tileSizeSelector
+{
+    alignment: center;
+    margin: auto;
+    width: 50%;
+    border-radius: 12px;
+    font-family: Verdana;
+    font-weight: bold;
+    font-size: 20px;
 }

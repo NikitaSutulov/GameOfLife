@@ -4,43 +4,48 @@
     <meta charset="UTF-8">
     <title>Conway's Game Of Life By Nikita Sutulov</title>
     <link rel="stylesheet" href="style.css" type="text/css">
+    <link rel="icon" type="image/x-icon" href='images/favicon.ico'>
 </head>
 <body>
-    <div class="maindiv">
+    <div class="mainDiv">
 
-        <div class="canvasdiv">
+        <div class="canvasDiv">
             <canvas id="canvas" width="900px" height="900px"></canvas>
         </div>
 
-        <div class="statsdiv">
+        <div class="statsDiv">
             <h1><u>Stats:</u></h1>
-            <p id="statspar">
+            <p id="statsPar">
             <h2>
                 Active cells: <br>
                 Dead cells: <br>
                 Cells about to die this turn: <br>
-                Cells about to be born this turn: <br>
+                Cells about to be born this turn:
             </h2>
             </p>
         </div>
 
-        <div class="buttonsdiv">
-            <input type="range" min="1" max="10" id="slider">
-            <p id="buttonspar">
-                Simulation speed: <br>
+        <div class="buttonsDiv">
+            <input type="range" min="1" max="10" value="5" id="speedSlider">
+            <p id="speedPar">
+                Simulation speed:
             </p>
+            <select id="tileSizeSelector">
+                <option value="small">Small tiles (18px)</option>
+                <option value="middle-sized">Middle-sized tiles (30px)</option>
+                <option value="large">Large tiles (50px)</option>
+            </select>
+            <br>
             <div id="buttons">
-                <button class="button" id="startbutton">Start!</button>
-                <button class="button" id="pausebutton">Pause!</button>
-                <button class="button" id="resetbutton">Reset!</button>
+                <button class="button" id="startButton">Start!</button>
+                <button class="button" id="pauseButton">Pause!</button>
+                <button class="button" id="resetButton">Reset!</button>
             </div>
         </div>
     </div>
 
     <footer>
-        <p>
         <h3>Conway's Game Of Life by Nikita Sutulov</h3>
-        </p>
     </footer>
 
     <script src="main.js" type='module'></script>
