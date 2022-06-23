@@ -2,26 +2,28 @@
 
 const uiElements = {
   statsParagraph: document.getElementById('statsPar'),
-  buttons: document.getElementsByClassName('button'),
+  buttons: document.querySelectorAll('.button'),
   canvas: document.getElementById('canvas'),
   speedParagraph: document.getElementById('speedPar'),
   speedSlider: document.getElementById('speedSlider'),
   tileSizeSelector: document.getElementById('tileSizeSelector')
 };
+uiElements.startButton = uiElements.buttons[0];
+uiElements.pauseButton = uiElements.buttons[1];
+uiElements.resetButton = uiElements.buttons[2];
 
-const updateGameSpeed = (frameInterval, callback) => {
-  let gameSpeed = uiElements.speedSlider.value;
-  const checkInterval = () => {
-    setInterval(() => {
-      const newGameSpeed = uiElements.speedSlider.value;
-      if (gameSpeed !== newGameSpeed) {
-        clearInterval(frameInterval);
-        frameInterval = setInterval(callback, 100 * newGameSpeed);
-        gameSpeed = newGameSpeed;
-      }
-    }, 50);
-  };
-  checkInterval();
+const canvasContext = uiElements.canvas.getContext('2d');
+
+const TILE_SIZES = {
+  "small": 18,
+  "medium": 30,
+  "large": 50
+};
+
+const FIELD_SIZES = {
+  "smallTiles": uiElements.canvas.width / TILE_SIZES["small"],
+  "mediumTiles": uiElements.canvas.width / TILE_SIZES["medium"],
+  "largeTiles": uiElements.canvas.width / TILE_SIZES["large"],
 };
 
 class Tile {
@@ -54,13 +56,13 @@ const getNeighborsCoords = (tile, fieldLength) => {
 
   for (let i = -1; i <= 1; i++) {
     for (let j = -1; j <= 1; j++) {
-      if (tile.posX + j === tile.posY + i && j === 0) {
+      if (i === 0 && j === 0) {
         continue;
       }
       const currentNeighborX = tile.posX + j;
       const currentNeighborY = tile.posY + i;
 
-      if (!(currentNeighborX === -1) || !(currentNeighborX === fieldLength)) {
+      if (!(currentNeighborX === -1) && !(currentNeighborX === fieldLength)) {
         coordsX.push(currentNeighborX);
       } else if (currentNeighborX === -1) {
         coordsX.push(fieldLength - 1);
@@ -68,7 +70,7 @@ const getNeighborsCoords = (tile, fieldLength) => {
         coordsX.push(0);
       }
 
-      if (!(currentNeighborY === -1) || !(currentNeighborY === fieldLength)) {
+      if (!(currentNeighborY === -1) && !(currentNeighborY === fieldLength)) {
         coordsY.push(currentNeighborY);
       } else if (currentNeighborY === -1) {
         coordsY.push(fieldLength - 1);
@@ -77,7 +79,6 @@ const getNeighborsCoords = (tile, fieldLength) => {
       }
     }
   }
-
   for (let i = 0; i < NEIGHBORS_NUMBER; i++) {
     neighborsCoords.push([coordsX[i], coordsY[i]]);
   }
@@ -98,11 +99,13 @@ const countAliveNeighbors = (field) => {
       }
       if (tile.isAlive && (aliveNeighborsCnt < 2 || aliveNeighborsCnt > 3)) {
         tile.isAboutToDie = true;
-      } else if (!tile.isAlive && aliveNeighborsCnt === 3) {
+      }
+      else if (!tile.isAlive && aliveNeighborsCnt === 3) {
         tile.isBeingBorn = true;
       }
     }
   }
+  console.log("Alive members counted!");
 };
 
 const killDyingTiles = (field) => {
@@ -111,9 +114,11 @@ const killDyingTiles = (field) => {
       if (tile.isAboutToDie) {
         tile.isAlive = false;
         tile.isAboutToDie = false;
+        console.log(`Tile killed: x=${tile.posY}, y=${tile.posX}`);
       }
     }
   }
+  console.log("Dying tiles killed!");
 };
 
 const giveBirthToNewTiles = (field) => {
@@ -122,15 +127,55 @@ const giveBirthToNewTiles = (field) => {
       if (tile.isBeingBorn) {
         tile.isAlive = true;
         tile.isBeingBorn = false;
+        console.log(`Tile born: x=${tile.posY}, y=${tile.posX}`);
       }
     }
   }
+  console.log("New tiles have been given birth!");
 };
 
-const simulate = () => {
-  console.log(uiElements.speedSlider.value);
+const drawField = (gameField, tileSize) => {
+  canvasContext.fillStyle = 'rgb(255,0,0)';
+  for (const row of gameField) {
+    for (const tile of row) {
+      if (tile.isAlive) {
+        canvasContext.fillRect(tile.posX * tileSize, tile.posY * tileSize, tileSize, tileSize);
+      }
+      else if (!tile.isAlive) {
+        canvasContext.fillStyle = '#222';
+        canvasContext.fillRect(tile.posX * tileSize, tile.posY * tileSize, tileSize, tileSize);
+        canvasContext.fillStyle = 'rgb(255,0,0)';
+        console.log("TILE DEAD");
+      }
+    }
+  }
+  console.log("Field drawn!");
 };
 
-const frameInterval = setInterval(simulate, 100 * uiElements.speedSlider.value);
+const testGameField = createGameField(50);
+testGameField[1][2].isAlive = true;
+testGameField[2][2].isAlive = true;
+testGameField[3][2].isAlive = true;
+testGameField[3][1].isAlive = true;
+testGameField[2][0].isAlive = true;
+drawField(testGameField, 18);
 
-updateGameSpeed(frameInterval, simulate);
+const simulateOneGameTurn = () => {
+  countAliveNeighbors(testGameField);
+  killDyingTiles(testGameField);
+  giveBirthToNewTiles(testGameField);
+  drawField(testGameField, 18);
+};
+
+const getFrameTime = () => {
+  const TIME_CONSTANT = 1000;
+  const frameTime = Math.floor(TIME_CONSTANT / uiElements.speedSlider.value);
+  return frameTime;
+};
+
+let frameInterval = setInterval(simulateOneGameTurn, getFrameTime());
+
+uiElements.speedSlider.onchange = () => {
+  clearInterval(frameInterval);
+  frameInterval = setInterval(simulateOneGameTurn, getFrameTime());
+};
