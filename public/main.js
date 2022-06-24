@@ -152,19 +152,26 @@ const drawField = (gameField, tileSize) => {
   console.log("Field drawn!");
 };
 
-const testGameField = createGameField(50);
-testGameField[1][2].isAlive = true;
-testGameField[2][2].isAlive = true;
-testGameField[3][2].isAlive = true;
-testGameField[3][1].isAlive = true;
-testGameField[2][0].isAlive = true;
-drawField(testGameField, 18);
+const resetField = (gameField) => {
+  for (const row of gameField) {
+    for (const tile of row) {
+      tile.isAlive = false;
+      tile.isAboutToDie = false;
+      tile.isBeingBorn = false;
+    }
+  }
+};
 
-const simulateOneGameTurn = () => {
-  countAliveNeighbors(testGameField);
-  killDyingTiles(testGameField);
-  giveBirthToNewTiles(testGameField);
-  drawField(testGameField, 18);
+const simulateOneGameTurn = (gameField, tileSize) => {
+  if (!isGamePaused) {
+    countAliveNeighbors(gameField);
+    killDyingTiles(gameField);
+    giveBirthToNewTiles(gameField);
+    drawField(gameField, tileSize);
+  }
+  else {
+    console.log("The game is currently paused");
+  }
 };
 
 const getFrameTime = () => {
@@ -173,9 +180,63 @@ const getFrameTime = () => {
   return frameTime;
 };
 
-let frameInterval = setInterval(simulateOneGameTurn, getFrameTime());
-
-uiElements.speedSlider.onchange = () => {
-  clearInterval(frameInterval);
-  frameInterval = setInterval(simulateOneGameTurn, getFrameTime());
+const updateSimulationSpeedDisplaying = () => {
+  uiElements.speedParagraph.innerText = "Simulation speed: " + Math.floor(1 / getFrameTime() * 1000);
 };
+
+const ongoingIntervals = [];
+let isGameStarted = false;
+let isGamePaused = true;
+updateSimulationSpeedDisplaying();
+uiElements.speedSlider.onchange = () => {
+  updateSimulationSpeedDisplaying();
+};
+
+uiElements.startButton.onclick = () => {
+  if (isGamePaused) {
+    isGamePaused = false;
+  }
+  if (!isGameStarted) {
+    isGameStarted = true;
+    const tileSizeSelectorValue = uiElements.tileSizeSelector.value;
+    const tileSize = TILE_SIZES[tileSizeSelectorValue];
+    const fieldLength = FIELD_SIZES[tileSizeSelectorValue + "Tiles"];
+    const gameField = createGameField(fieldLength);
+
+    gameField[1][2].isAlive = true; // just a test, will be deleted
+    gameField[2][2].isAlive = true; // after mouse click support is added!
+    gameField[3][2].isAlive = true;
+    gameField[3][1].isAlive = true;
+    gameField[2][0].isAlive = true;
+
+    if (ongoingIntervals.length === 1) {
+      clearInterval(ongoingIntervals[0]);
+      ongoingIntervals.pop();
+    }
+    isGamePaused = false;
+    let frameInterval = setInterval(() => simulateOneGameTurn(gameField, tileSize), getFrameTime());
+    ongoingIntervals.push(frameInterval);
+
+    uiElements.speedSlider.onchange = () => {
+      clearInterval(frameInterval);
+      ongoingIntervals.pop();
+      frameInterval = setInterval(() => simulateOneGameTurn(gameField, tileSize), getFrameTime());
+      ongoingIntervals.push(frameInterval);
+      updateSimulationSpeedDisplaying();
+    };
+
+    uiElements.pauseButton.onclick = () => {
+      isGamePaused = true;
+      console.log("Game is paused!");
+    };
+
+    uiElements.resetButton.onclick = () => {
+      isGameStarted = false;
+      resetField(gameField);
+      simulateOneGameTurn(gameField, tileSize);
+      isGamePaused = true;
+      console.log("Game has been reset!");
+    };
+  }
+};
+
