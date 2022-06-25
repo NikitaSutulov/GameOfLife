@@ -15,15 +15,15 @@ uiElements.resetButton = uiElements.buttons[2];
 const canvasContext = uiElements.canvas.getContext('2d');
 
 const TILE_SIZES = {
-  "small": 18,
-  "medium": 30,
-  "large": 50
+  'small': 18,
+  'medium': 30,
+  'large': 50
 };
 
 const FIELD_SIZES = {
-  "smallTiles": uiElements.canvas.width / TILE_SIZES["small"],
-  "mediumTiles": uiElements.canvas.width / TILE_SIZES["medium"],
-  "largeTiles": uiElements.canvas.width / TILE_SIZES["large"],
+  'smallTiles': uiElements.canvas.width / TILE_SIZES['small'],
+  'mediumTiles': uiElements.canvas.width / TILE_SIZES['medium'],
+  'largeTiles': uiElements.canvas.width / TILE_SIZES['large'],
 };
 
 class Tile {
@@ -99,13 +99,12 @@ const countAliveNeighbors = (field) => {
       }
       if (tile.isAlive && (aliveNeighborsCnt < 2 || aliveNeighborsCnt > 3)) {
         tile.isAboutToDie = true;
-      }
-      else if (!tile.isAlive && aliveNeighborsCnt === 3) {
+      } else if (!tile.isAlive && aliveNeighborsCnt === 3) {
         tile.isBeingBorn = true;
       }
     }
   }
-  console.log("Alive members counted!");
+  console.log('Alive members counted!');
 };
 
 const killDyingTiles = (field) => {
@@ -118,10 +117,11 @@ const killDyingTiles = (field) => {
       }
     }
   }
-  console.log("Dying tiles killed!");
+  console.log('Dying tiles killed!');
 };
 
 const giveBirthToNewTiles = (field) => {
+  let newTilesCnt = 0;
   for (const row of field) {
     for (const tile of row) {
       if (tile.isBeingBorn) {
@@ -131,7 +131,7 @@ const giveBirthToNewTiles = (field) => {
       }
     }
   }
-  console.log("New tiles have been given birth!");
+  console.log('New tiles have been given birth!');
 };
 
 const drawField = (gameField, tileSize) => {
@@ -140,16 +140,15 @@ const drawField = (gameField, tileSize) => {
     for (const tile of row) {
       if (tile.isAlive) {
         canvasContext.fillRect(tile.posX * tileSize, tile.posY * tileSize, tileSize, tileSize);
-      }
-      else if (!tile.isAlive) {
+      } else if (!tile.isAlive) {
         canvasContext.fillStyle = '#222';
         canvasContext.fillRect(tile.posX * tileSize, tile.posY * tileSize, tileSize, tileSize);
         canvasContext.fillStyle = 'rgb(255,0,0)';
-        console.log("TILE DEAD");
+        console.log('TILE DEAD');
       }
     }
   }
-  console.log("Field drawn!");
+  console.log('Field drawn!');
 };
 
 const resetField = (gameField) => {
@@ -168,9 +167,8 @@ const simulateOneGameTurn = (gameField, tileSize) => {
     killDyingTiles(gameField);
     giveBirthToNewTiles(gameField);
     drawField(gameField, tileSize);
-  }
-  else {
-    console.log("The game is currently paused");
+  } else {
+    console.log('The game is currently paused');
   }
 };
 
@@ -181,7 +179,18 @@ const getFrameTime = () => {
 };
 
 const updateSimulationSpeedDisplaying = () => {
-  uiElements.speedParagraph.innerText = "Simulation speed: " + Math.floor(1 / getFrameTime() * 1000);
+  uiElements.speedParagraph.innerText = 'Simulation speed: ' + Math.floor(1 / getFrameTime() * 1000);
+};
+
+const reviveClickedTile = (gameField, x, y) => {
+  for (const row of gameField) {
+    for (const tile of row) {
+      if (x === tile.posX && y === tile.posY) {
+        tile.isAlive = true;
+        console.log("Revived a tile.");
+      }
+    }
+  }
 };
 
 const ongoingIntervals = [];
@@ -200,14 +209,8 @@ uiElements.startButton.onclick = () => {
     isGameStarted = true;
     const tileSizeSelectorValue = uiElements.tileSizeSelector.value;
     const tileSize = TILE_SIZES[tileSizeSelectorValue];
-    const fieldLength = FIELD_SIZES[tileSizeSelectorValue + "Tiles"];
+    const fieldLength = FIELD_SIZES[tileSizeSelectorValue + 'Tiles'];
     const gameField = createGameField(fieldLength);
-
-    gameField[1][2].isAlive = true; // just a test, will be deleted
-    gameField[2][2].isAlive = true; // after mouse click support is added!
-    gameField[3][2].isAlive = true;
-    gameField[3][1].isAlive = true;
-    gameField[2][0].isAlive = true;
 
     if (ongoingIntervals.length === 1) {
       clearInterval(ongoingIntervals[0]);
@@ -227,7 +230,7 @@ uiElements.startButton.onclick = () => {
 
     uiElements.pauseButton.onclick = () => {
       isGamePaused = true;
-      console.log("Game is paused!");
+      console.log('Game is paused!');
     };
 
     uiElements.resetButton.onclick = () => {
@@ -235,8 +238,24 @@ uiElements.startButton.onclick = () => {
       resetField(gameField);
       simulateOneGameTurn(gameField, tileSize);
       isGamePaused = true;
-      console.log("Game has been reset!");
+      console.log('Game has been reset!');
+    };
+
+    uiElements.canvas.onmousedown = (event) => {
+      const canvasRect = uiElements.canvas.getBoundingClientRect();
+      const offsetX = -10 - canvasRect.left;
+      const offsetY = -10 - canvasRect.top;
+      const canvasClickX = event.clientX + offsetX;
+      const canvasClickY = event.clientY + offsetY;
+      console.log(`Canvas click: x=${canvasClickX}, y=${canvasClickY}`);
+      const tileX = Math.floor((canvasClickX) / tileSize);
+      const tileY = Math.floor((canvasClickY) / tileSize);
+      console.log(`Tile x=${tileX}, y=${tileY}`);
+      reviveClickedTile(gameField, tileX, tileY);
+      drawField(gameField, tileSize);
     };
   }
 };
+
+
 
