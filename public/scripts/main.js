@@ -18,6 +18,7 @@ uiElements.body.onload = () => {
   };
 
   initField(fieldParameters);
+  drawField(fieldParameters);
 
   updateSimulationSpeedDisplaying();
   uiElements.speedSlider.onchange = () => {

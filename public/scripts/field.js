@@ -109,7 +109,7 @@ const drawField = (fieldParams) => {
   const TILE_IMAGES_PATHS = {
     'small': '../images/tile_small.jpg',
     'medium': '../images/tile_medium.jpg',
-    'large': '..images/tile.large.jpg';
+    'large': '..images/tile.large.jpg'
   };
   for (const row of gameField) {
     for (const tile of row) {
@@ -121,13 +121,13 @@ const drawField = (fieldParams) => {
           fieldParams.tileSize
         );
       } else if (!tile.isAlive) {
-        uiElements.canvasContext.fillStyle = '#222';
-        uiElements.canvasContext.fillRect(
+        const tileImage = new Image(fieldParams.tileSize, fieldParams.tileSize);
+        tileImage.src = '../images/tile.jpg';
+        uiElements.canvasContext.drawImage(tileImage,
           tile.posX * fieldParams.tileSize,
-          tile.posY * fieldParams.tileSize,
-          fieldParams.tileSize,
-          fieldParams.tileSize);
-        uiElements.canvasContext.fillStyle = 'rgb(255,0,0)';
+          tile.posY * fieldParams.tileSize
+        );
+
         console.log('TILE DEAD');
       }
     }

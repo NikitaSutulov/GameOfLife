@@ -32,7 +32,6 @@ body
     alignment: left;
     grid-row-start: 1;
     grid-row-end: 2;
-    background-color: #222;
 }
 .statsDiv
 {
