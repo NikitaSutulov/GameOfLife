@@ -160,12 +160,17 @@ const updateSimulationSpeedDisplaying = () => {
   uiElements.speedParagraph.innerText = 'Simulation speed: ' + Math.floor(1 / getFrameTime() * 1000);
 };
 
-const reviveClickedTile = (fieldParams, x, y) => {
+const clickOnTile = (fieldParams, x, y) => {
   for (const row of fieldParams.gameField) {
     for (const tile of row) {
       if (x === tile.posX && y === tile.posY) {
-        tile.isAlive = true;
-        console.log("Revived a tile.");
+        if (!tile.isAlive) {
+          tile.isAlive = true;
+        }
+        else {
+          tile.isAlive = false;
+        }
+        console.log(`Clicked a tile: x=${x}, y=${y}`);
       }
     }
   }
@@ -180,4 +185,4 @@ const initField = (fieldParams) => {
 
 export { uiElements, drawField, resetField,
          simulateOneGameTurn, getFrameTime, updateSimulationSpeedDisplaying,
-         reviveClickedTile, initField };
+         clickOnTile, initField };

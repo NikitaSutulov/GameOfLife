@@ -1,7 +1,7 @@
 'use strict';
 import { drawField, resetField,
   simulateOneGameTurn, getFrameTime, updateSimulationSpeedDisplaying,
-  reviveClickedTile, initField } from './field.js';
+  clickOnTile, initField } from './field.js';
 import { uiElements } from './uiElements.js';
 
 
@@ -58,7 +58,7 @@ uiElements.body.onload = () => {
     const tileX = Math.floor((canvasClickX) / fieldParameters.tileSize);
     const tileY = Math.floor((canvasClickY) / fieldParameters.tileSize);
     console.log(`Tile x=${tileX}, y=${tileY}`);
-    reviveClickedTile(fieldParameters, tileX, tileY);
+    clickOnTile(fieldParameters, tileX, tileY);
     drawField(fieldParameters);
   };
   uiElements.pauseButton.onclick = () => {
