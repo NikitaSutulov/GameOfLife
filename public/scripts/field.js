@@ -1,41 +1,7 @@
 'use strict';
 
-const uiElements = {
-  statsParagraph: document.getElementById('statsPar'),
-  buttons: document.querySelectorAll('.button'),
-  canvas: document.getElementById('canvas'),
-  speedParagraph: document.getElementById('speedPar'),
-  speedSlider: document.getElementById('speedSlider'),
-  tileSizeSelector: document.getElementById('tileSizeSelector'),
-  body: document.querySelector("body")
-};
-uiElements.startButton = uiElements.buttons[0];
-uiElements.pauseButton = uiElements.buttons[1];
-uiElements.resetButton = uiElements.buttons[2];
-
-const canvasContext = uiElements.canvas.getContext('2d');
-
-const TILE_SIZES = {
-  'small': 18,
-  'medium': 30,
-  'large': 50
-};
-
-const FIELD_SIZES = {
-  'smallTiles': uiElements.canvas.width / TILE_SIZES['small'],
-  'mediumTiles': uiElements.canvas.width / TILE_SIZES['medium'],
-  'largeTiles': uiElements.canvas.width / TILE_SIZES['large'],
-};
-
-class Tile {
-  constructor(posX, posY) {
-    this.posX = posX;
-    this.posY = posY;
-    this.isAlive = false;
-    this.isBeingBorn = false;
-    this.isAboutToDie = false;
-  }
-}
+import { uiElements } from './uiElements';
+import { TILE_SIZES, FIELD_SIZES, Tile } from './tile';
 
 const createGameField = (fieldLength) => {
   const gameField = [];
@@ -143,24 +109,24 @@ const giveBirthToNewTiles = (field) => {
 };
 
 const drawField = (fieldParams) => {
-  canvasContext.fillStyle = 'rgb(255,0,0)';
+  uiElements.canvasContext.fillStyle = 'rgb(255,0,0)';
   for (const row of fieldParams.gameField) {
     for (const tile of row) {
       if (tile.isAlive) {
-        canvasContext.fillRect(
+        uiElements.canvasContext.fillRect(
           tile.posX * fieldParams.tileSize,
           tile.posY * fieldParams.tileSize,
           fieldParams.tileSize,
           fieldParams.tileSize
         );
       } else if (!tile.isAlive) {
-        canvasContext.fillStyle = '#222';
-        canvasContext.fillRect(
+        uiElements.canvasContext.fillStyle = '#222';
+        uiElements.canvasContext.fillRect(
           tile.posX * fieldParams.tileSize,
           tile.posY * fieldParams.tileSize,
           fieldParams.tileSize,
           fieldParams.tileSize);
-        canvasContext.fillStyle = 'rgb(255,0,0)';
+        uiElements.canvasContext.fillStyle = 'rgb(255,0,0)';
         console.log('TILE DEAD');
       }
     }

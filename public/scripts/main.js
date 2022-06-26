@@ -1,7 +1,9 @@
 'use strict';
-import { uiElements, drawField, resetField,
+import { drawField, resetField,
   simulateOneGameTurn, getFrameTime, updateSimulationSpeedDisplaying,
   reviveClickedTile, initField } from './field.js';
+import { uiElements } from './field.js';
+
 
 uiElements.body.onload = () => {
   const ongoingIntervals = [];
@@ -16,7 +18,7 @@ uiElements.body.onload = () => {
   };
   const fieldParamsArray = Object.keys(fieldParameters);
 
-  initField(...fieldParamsArray);
+  initField(fieldParameters);
 
   updateSimulationSpeedDisplaying();
   uiElements.speedSlider.onchange = () => {
