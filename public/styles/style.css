@@ -60,6 +60,7 @@ body
 {
     width: 100%;
     border-radius: 12px;
+    margin-top: 1%;
     font-family: Verdana;
     font-weight: bold;
     font-size: 20px;
@@ -68,27 +69,27 @@ body
 {
     grid-column-start: 1;
     grid-column-end: 2;
-    grid-row: 1;
+    grid-row: 2;
 }
 #pauseButton
-{
-    grid-column-start: 3;
-    grid-column-end: 4;
-    grid-row: 1;
-}
-#resetButton
 {
     grid-column-start: 2;
     grid-column-end: 3;
     grid-row: 2;
 }
+#resetButton
+{
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row: 2;
+}
 #tileSizeSelector
 {
-    alignment: center;
-    margin: auto;
-    width: 50%;
     border-radius: 12px;
     font-family: Verdana;
     font-weight: bold;
     font-size: 20px;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row: 1;
 }

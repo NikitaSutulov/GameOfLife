@@ -17,10 +17,10 @@
             <h1><u>Stats:</u></h1>
             <p id="statsPar">
             <h2>
-                Active cells: <br>
-                Dead cells: <br>
-                Cells about to die this turn: <br>
-                Cells about to be born this turn:
+                <label class='statLabel' id='aliveTilesLabel'>Active cells: </label>                            <br>
+                <label class='statLabel' id='deadTilesLabel'>Dead cells: </label>                               <br>
+                <label class='statLabel' id='dyingTilesLabel'>Cells about to die this turn: </label>            <br>
+                <label class='statLabel' id='beingBornTilesLabel'>Cells about to be born this turn: </label>    <br>
             </h2>
             </p>
         </div>
@@ -30,16 +30,16 @@
             <p id="speedPar">
                 Simulation speed:
             </p>
-            <select id="tileSizeSelector">
-                <option value="small">Small tiles (18px)</option>
-                <option value="medium" selected>Medium-sized tiles (30px)</option>
-                <option value="large">Large tiles (50px)</option>
-            </select>
             <br>
             <div id="buttons">
                 <button class="button" id="startButton">Start!</button>
                 <button class="button" id="pauseButton">Pause!</button>
                 <button class="button" id="resetButton">Reset!</button>
+                <select id="tileSizeSelector">
+                    <option value="small">Small tiles (18px)</option>
+                    <option value="medium" selected>Medium-sized tiles (30px)</option>
+                    <option value="large">Large tiles (50px)</option>
+                </select>
             </div>
         </div>
     </div>

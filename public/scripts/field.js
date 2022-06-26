@@ -1,7 +1,7 @@
 'use strict';
 
-import { uiElements } from './uiElements';
-import { TILE_SIZES, FIELD_SIZES, Tile } from './tile';
+import { uiElements } from './uiElements.js';
+import { TILE_SIZES, FIELD_SIZES, Tile } from './tile.js';
 
 const createGameField = (fieldLength) => {
   const gameField = [];
@@ -100,17 +100,13 @@ const giveBirthToNewTiles = (field) => {
     }
   }
   console.log('New tiles have been given birth!');
-  uiElements.statsParagraph.innerHTML = "<h2>\n" +
-    "                Active cells: <br>\n" +
-    "                Dead cells: <br>\n" +
-    "                Cells about to die this turn: <br>\n" +
-    "                Cells about to be born this turn:\n" +
-    "                </h2>";
+
 };
 
 const drawField = (fieldParams) => {
   uiElements.canvasContext.fillStyle = 'rgb(255,0,0)';
-  for (const row of fieldParams.gameField) {
+  const gameField = fieldParams.gameField;
+  for (const row of gameField) {
     for (const tile of row) {
       if (tile.isAlive) {
         uiElements.canvasContext.fillRect(
@@ -149,7 +145,7 @@ const simulateOneGameTurn = (fieldParams, isGamePaused) => {
     countAliveNeighbors(fieldParams.gameField);
     killDyingTiles(fieldParams.gameField);
     giveBirthToNewTiles(fieldParams.gameField);
-    drawField(fieldParams.gameField, fieldParams.tileSize);
+    drawField(fieldParams);
   } else {
     console.log('The game is currently paused');
   }

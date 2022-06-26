@@ -1,6 +1,6 @@
 'use strict';
 
-import { uiElements } from './uiElements';
+import { uiElements } from './uiElements.js';
 
 const TILE_SIZES = {
   'small': 18,

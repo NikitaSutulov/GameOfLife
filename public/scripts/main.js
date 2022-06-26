@@ -2,7 +2,7 @@
 import { drawField, resetField,
   simulateOneGameTurn, getFrameTime, updateSimulationSpeedDisplaying,
   reviveClickedTile, initField } from './field.js';
-import { uiElements } from './field.js';
+import { uiElements } from './uiElements.js';
 
 
 uiElements.body.onload = () => {
@@ -16,7 +16,6 @@ uiElements.body.onload = () => {
     tileSize: null,
     gameField: null
   };
-  const fieldParamsArray = Object.keys(fieldParameters);
 
   initField(fieldParameters);
 
@@ -31,8 +30,6 @@ uiElements.body.onload = () => {
     }
     if (!isGameStarted) {
       isGameStarted = true;
-      initField(fieldParameters);
-
       if (ongoingIntervals.length === 1) {
         clearInterval(ongoingIntervals[0]);
         ongoingIntervals.pop();
@@ -80,5 +77,7 @@ uiElements.body.onload = () => {
 
   uiElements.tileSizeSelector.onchange = () => {
     initField(fieldParameters);
+    isGamePaused = true;
+    drawField(fieldParameters);
   };
 };
