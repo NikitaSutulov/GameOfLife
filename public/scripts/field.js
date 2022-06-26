@@ -52,19 +52,21 @@ const getNeighborsCoords = (tile, fieldLength) => {
   return neighborsCoords;
 };
 
-const countAliveNeighbors = (field) => {
-  const fieldLength = field.length;
-  for (const row of field) {
+const countAliveNeighbors = (gameField) => {
+  const fieldLength = gameField.length;
+  const MIN_NEIGHBORS_FOR_SURVIVAL = 2;
+  const MAX_NEIGHBORS_FOR_SURVIVAL = 3;
+  for (const row of gameField) {
     for (const tile of row) {
       let aliveNeighborsCnt = 0;
       const neighborsCoords = getNeighborsCoords(tile, fieldLength);
       for (const neighborCoords of neighborsCoords) {
-        const currentNeighbor = field[neighborCoords[1]][neighborCoords[0]];
+        const currentNeighbor = gameField[neighborCoords[1]][neighborCoords[0]];
         if (currentNeighbor.isAlive) {
           aliveNeighborsCnt++;
         }
       }
-      if (tile.isAlive && (aliveNeighborsCnt < 2 || aliveNeighborsCnt > 3)) {
+      if (tile.isAlive && (aliveNeighborsCnt < MIN_NEIGHBORS_FOR_SURVIVAL || aliveNeighborsCnt > MAX_NEIGHBORS_FOR_SURVIVAL)) {
         tile.isAboutToDie = true;
       } else if (!tile.isAlive && aliveNeighborsCnt === 3) {
         tile.isBeingBorn = true;
@@ -74,8 +76,8 @@ const countAliveNeighbors = (field) => {
   console.log('Alive members counted!');
 };
 
-const killDyingTiles = (field) => {
-  for (const row of field) {
+const killDyingTiles = (gameField) => {
+  for (const row of gameField) {
     for (const tile of row) {
       if (tile.isAboutToDie) {
         tile.isAlive = false;
@@ -87,9 +89,9 @@ const killDyingTiles = (field) => {
   console.log('Dying tiles killed!');
 };
 
-const giveBirthToNewTiles = (field) => {
+const giveBirthToNewTiles = (gameField) => {
   let newTilesCnt = 0;
-  for (const row of field) {
+  for (const row of gameField) {
     for (const tile of row) {
       if (tile.isBeingBorn) {
         tile.isAlive = true;
@@ -106,11 +108,6 @@ const giveBirthToNewTiles = (field) => {
 const drawField = (fieldParams) => {
   uiElements.canvasContext.fillStyle = 'rgb(255,0,0)';
   const gameField = fieldParams.gameField;
-  const TILE_IMAGES_PATHS = {
-    'small': '../images/tile_small.jpg',
-    'medium': '../images/tile_medium.jpg',
-    'large': '..images/tile.large.jpg'
-  };
   for (const row of gameField) {
     for (const tile of row) {
       if (tile.isAlive) {
