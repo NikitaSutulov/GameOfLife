@@ -110,7 +110,7 @@ const giveBirthToNewTiles = (gameField) => {
 };
 
 const drawField = (fieldParams) => {
-  uiElements.canvasContext.fillStyle = 'rgb(255,0,0)';
+  uiElements.canvasContext.fillStyle = uiElements.colorSelector.value;
   const gameField = fieldParams.gameField;
   let aliveTilesCnt = 0;
   let deadTilesCnt = 0;

@@ -81,4 +81,8 @@ uiElements.body.onload = () => {
     isGamePaused = true;
     drawField(fieldParameters);
   };
+
+  uiElements.colorSelector.onchange = () => {
+    drawField(fieldParameters);
+  }
 };

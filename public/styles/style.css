@@ -48,7 +48,7 @@ body
 {
     display: grid;
     grid-auto-columns: 1fr 1fr 1fr 1fr;
-    grid-auto-rows: 1fr 1fr;
+    grid-auto-rows: 1fr 1fr 1fr;
     margin-top: 1%;
     margin-bottom: 1%;
 }

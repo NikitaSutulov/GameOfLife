@@ -7,7 +7,8 @@ const uiElements = {
   speedParagraph: document.getElementById('speedPar'),
   speedSlider: document.getElementById('speedSlider'),
   tileSizeSelector: document.getElementById('tileSizeSelector'),
-  body: document.querySelector("body")
+  body: document.querySelector('body'),
+  colorSelector: document.getElementById('colorSelector')
 };
 uiElements.startButton = uiElements.buttons[0];
 uiElements.pauseButton = uiElements.buttons[1];
