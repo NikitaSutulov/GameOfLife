@@ -77,16 +77,19 @@ const countAliveNeighbors = (gameField) => {
 };
 
 const killDyingTiles = (gameField) => {
+  let dyingTilesCnt = 0;
   for (const row of gameField) {
     for (const tile of row) {
       if (tile.isAboutToDie) {
         tile.isAlive = false;
         tile.isAboutToDie = false;
         console.log(`Tile killed: x=${tile.posY}, y=${tile.posX}`);
+        dyingTilesCnt++;
       }
     }
   }
   console.log('Dying tiles killed!');
+  uiElements.dyingTilesLabel.innerHTML =  `Tiles about to die this turn: ${dyingTilesCnt}`;
 };
 
 const giveBirthToNewTiles = (gameField) => {
@@ -101,6 +104,7 @@ const giveBirthToNewTiles = (gameField) => {
       }
     }
   }
+  uiElements.beingBornTilesLabel.innerHTML = `Tiles about to be born this turn: ${newTilesCnt}`;
   console.log('New tiles have been given birth!');
 
 };
@@ -108,6 +112,8 @@ const giveBirthToNewTiles = (gameField) => {
 const drawField = (fieldParams) => {
   uiElements.canvasContext.fillStyle = 'rgb(255,0,0)';
   const gameField = fieldParams.gameField;
+  let aliveTilesCnt = 0;
+  let deadTilesCnt = 0;
   for (const row of gameField) {
     for (const tile of row) {
       if (tile.isAlive) {
@@ -117,19 +123,23 @@ const drawField = (fieldParams) => {
           fieldParams.tileSize,
           fieldParams.tileSize
         );
-      } else if (!tile.isAlive) {
+        aliveTilesCnt++;
+      }
+      else {
         const tileImage = new Image(fieldParams.tileSize, fieldParams.tileSize);
         tileImage.src = '../images/tile.jpg';
         uiElements.canvasContext.drawImage(tileImage,
           tile.posX * fieldParams.tileSize,
           tile.posY * fieldParams.tileSize
         );
-
+        deadTilesCnt++;
         console.log('TILE DEAD');
       }
     }
   }
   console.log('Field drawn!');
+  uiElements.aliveTilesLabel.innerHTML = `Alive tiles: ${aliveTilesCnt}`;
+  uiElements.deadTilesLabel.innerHTML = `Dead tiles: ${deadTilesCnt}`;
 };
 
 const resetField = (fieldParams) => {
