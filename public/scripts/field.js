@@ -106,6 +106,11 @@ const giveBirthToNewTiles = (field) => {
 const drawField = (fieldParams) => {
   uiElements.canvasContext.fillStyle = 'rgb(255,0,0)';
   const gameField = fieldParams.gameField;
+  const TILE_IMAGES_PATHS = {
+    'small': '../images/tile_small.jpg',
+    'medium': '../images/tile_medium.jpg',
+    'large': '..images/tile.large.jpg';
+  };
   for (const row of gameField) {
     for (const tile of row) {
       if (tile.isAlive) {
