@@ -201,8 +201,7 @@ const clickOnTile = (fieldParams, x, y) => {
 const initField = (fieldParams) => {
   fieldParams.tileSizeSelectorValue = uiElements.tileSizeSelector.value;
   fieldParams.tileSize = TILE_SIZES[fieldParams.tileSizeSelectorValue];
-  fieldParams.fieldLength = FIELD_SIZES[fieldParams.tileSizeSelectorValue
-                                        + 'Tiles'];
+  fieldParams.fieldLength = FIELD_SIZES[fieldParams.tileSizeSelectorValue + 'Tiles'];
   fieldParams.gameField = createGameField(fieldParams.fieldLength);
 };
 
