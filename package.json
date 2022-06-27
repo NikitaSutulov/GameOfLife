@@ -2,7 +2,7 @@
   "name": "gameoflife",
   "version": "1.0.0",
   "description": "Conway's Game Of Life recreation written from scratch by Nikita Sutulov, KPI FICT student from IM-12 group.",
-  "main": "public/scripts/main.js",
+  "main": "docs/scripts/main.js",
   "scripts": {
     "test": "npm run -s lint",
     "lint": "eslint . --fix && prettier --write \"**/*.js\" \"**/*.json\"",

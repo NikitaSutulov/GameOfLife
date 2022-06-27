@@ -36,13 +36,17 @@ uiElements.body.onload = () => {
         ongoingIntervals.pop();
       }
       isGamePaused = false;
-      let frameInterval = setInterval(() => simulateOneGameTurn(fieldParameters, isGamePaused), getFrameTime());
+      let frameInterval = setInterval(() => {
+        simulateOneGameTurn(fieldParameters, isGamePaused);
+      }, getFrameTime());
       ongoingIntervals.push(frameInterval);
 
       uiElements.speedSlider.onchange = () => {
         clearInterval(frameInterval);
         ongoingIntervals.pop();
-        frameInterval = setInterval(() => simulateOneGameTurn(fieldParameters, isGamePaused), getFrameTime());
+        frameInterval = setInterval(() => {
+          simulateOneGameTurn(fieldParameters, isGamePaused);
+        }, getFrameTime());
         ongoingIntervals.push(frameInterval);
         updateSimulationSpeedDisplaying();
       };
