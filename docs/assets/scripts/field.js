@@ -139,7 +139,7 @@ const drawField = (fieldParams) => {
         aliveTilesCnt++;
       } else {
         const tileImage = new Image(fieldParams.tileSize, fieldParams.tileSize);
-        tileImage.src = '../images/tile.jpg';
+        tileImage.src = 'https://nikitasutulov.github.io/GameOfLife/docs/assets/images/tile.jpg';
         uiElements.canvasContext.drawImage(tileImage,
           tile.posX * fieldParams.tileSize,
           tile.posY * fieldParams.tileSize
