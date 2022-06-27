@@ -56,6 +56,7 @@ const countAliveNeighbors = (gameField) => {
   const fieldLength = gameField.length;
   const MIN_NEIGHBORS_FOR_SURVIVAL = 2;
   const MAX_NEIGHBORS_FOR_SURVIVAL = 3;
+  const NEIGHBORS_FOR_BIRTH = 3;
   for (const row of gameField) {
     for (const tile of row) {
       let aliveNeighborsCnt = 0;
@@ -68,7 +69,7 @@ const countAliveNeighbors = (gameField) => {
       }
       if (tile.isAlive && (aliveNeighborsCnt < MIN_NEIGHBORS_FOR_SURVIVAL || aliveNeighborsCnt > MAX_NEIGHBORS_FOR_SURVIVAL)) {
         tile.isAboutToDie = true;
-      } else if (!tile.isAlive && aliveNeighborsCnt === 3) {
+      } else if (!tile.isAlive && aliveNeighborsCnt === NEIGHBORS_FOR_BIRTH) {
         tile.isBeingBorn = true;
       }
     }
