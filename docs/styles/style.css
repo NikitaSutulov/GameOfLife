@@ -93,3 +93,7 @@ body
     grid-column-end: 4;
     grid-row: 1;
 }
+#tileImage
+{
+    display: none;
+}
