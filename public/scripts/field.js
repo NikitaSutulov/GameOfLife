@@ -2,8 +2,11 @@
 
 import { uiElements } from './uiElements.js';
 import { TILE_SIZES, FIELD_SIZES, Tile } from './tile.js';
+import { validateFieldLength, validateTile, validateGameField,
+  validateIsGamePaused, validateCoords } from './validation.js';
 
 const createGameField = (fieldLength) => {
+  validateFieldLength()
   const gameField = [];
   for (let i = 0; i < fieldLength; i++) {
     const gameFieldRow = [];
@@ -16,6 +19,8 @@ const createGameField = (fieldLength) => {
 };
 
 const getNeighborsCoords = (tile, fieldLength) => {
+  validateTile(tile);
+  validateFieldLength(fieldLength);
   const coordsX = [];
   const coordsY = [];
   const neighborsCoords = [];
@@ -53,6 +58,7 @@ const getNeighborsCoords = (tile, fieldLength) => {
 };
 
 const countAliveNeighbors = (gameField) => {
+  validateGameField(gameField);
   const fieldLength = gameField.length;
   const MIN_NEIGHBORS_FOR_SURVIVAL = 2;
   const MAX_NEIGHBORS_FOR_SURVIVAL = 3;
@@ -67,7 +73,8 @@ const countAliveNeighbors = (gameField) => {
           aliveNeighborsCnt++;
         }
       }
-      if (tile.isAlive && (aliveNeighborsCnt < MIN_NEIGHBORS_FOR_SURVIVAL || aliveNeighborsCnt > MAX_NEIGHBORS_FOR_SURVIVAL)) {
+      if (tile.isAlive && (aliveNeighborsCnt < MIN_NEIGHBORS_FOR_SURVIVAL
+        || aliveNeighborsCnt > MAX_NEIGHBORS_FOR_SURVIVAL)) {
         tile.isAboutToDie = true;
       } else if (!tile.isAlive && aliveNeighborsCnt === NEIGHBORS_FOR_BIRTH) {
         tile.isBeingBorn = true;
@@ -78,6 +85,10 @@ const countAliveNeighbors = (gameField) => {
 };
 
 const killDyingTiles = (gameField) => {
+  validateGameField(gameField);
+  if (!(gameField instanceof Array)) {
+    throw new Error('Error: gameField must be an array.');
+  }
   let dyingTilesCnt = 0;
   for (const row of gameField) {
     for (const tile of row) {
@@ -94,6 +105,7 @@ const killDyingTiles = (gameField) => {
 };
 
 const giveBirthToNewTiles = (gameField) => {
+  validateGameField(gameField);
   let newTilesCnt = 0;
   for (const row of gameField) {
     for (const tile of row) {
@@ -105,9 +117,9 @@ const giveBirthToNewTiles = (gameField) => {
       }
     }
   }
-  uiElements.beingBornTilesLabel.innerHTML = `Tiles about to be born this turn: ${newTilesCnt}`;
+  uiElements.beingBornTilesLabel.innerHTML = `Tiles about to be born 
+                                              this turn: ${newTilesCnt}`;
   console.log('New tiles have been given birth!');
-
 };
 
 const drawField = (fieldParams) => {
@@ -125,8 +137,7 @@ const drawField = (fieldParams) => {
           fieldParams.tileSize
         );
         aliveTilesCnt++;
-      }
-      else {
+      } else {
         const tileImage = new Image(fieldParams.tileSize, fieldParams.tileSize);
         tileImage.src = '../images/tile.jpg';
         uiElements.canvasContext.drawImage(tileImage,
@@ -154,6 +165,7 @@ const resetField = (fieldParams) => {
 };
 
 const simulateOneGameTurn = (fieldParams, isGamePaused) => {
+  validateIsGamePaused(isGamePaused);
   if (!isGamePaused) {
     countAliveNeighbors(fieldParams.gameField);
     killDyingTiles(fieldParams.gameField);
@@ -170,19 +182,16 @@ const getFrameTime = () => {
 };
 
 const updateSimulationSpeedDisplaying = () => {
-  uiElements.speedParagraph.innerText = 'Simulation speed: ' + Math.floor(1 / getFrameTime() * 1000);
+  uiElements.speedParagraph.innerText = 'Simulation speed: ' +
+                                        Math.floor(1 / getFrameTime() * 1000);
 };
 
 const clickOnTile = (fieldParams, x, y) => {
+  validateCoords(x, y);
   for (const row of fieldParams.gameField) {
     for (const tile of row) {
       if (x === tile.posX && y === tile.posY) {
-        if (!tile.isAlive) {
-          tile.isAlive = true;
-        }
-        else {
-          tile.isAlive = false;
-        }
+        tile.invertTileState();
         console.log(`Clicked a tile: x=${x}, y=${y}`);
       }
     }
@@ -192,10 +201,11 @@ const clickOnTile = (fieldParams, x, y) => {
 const initField = (fieldParams) => {
   fieldParams.tileSizeSelectorValue = uiElements.tileSizeSelector.value;
   fieldParams.tileSize = TILE_SIZES[fieldParams.tileSizeSelectorValue];
-  fieldParams.fieldLength = FIELD_SIZES[fieldParams.tileSizeSelectorValue + 'Tiles'];
+  fieldParams.fieldLength = FIELD_SIZES[fieldParams.tileSizeSelectorValue +
+                                        'Tiles'];
   fieldParams.gameField = createGameField(fieldParams.fieldLength);
 };
 
-export { uiElements, drawField, resetField,
+export { drawField, resetField,
          simulateOneGameTurn, getFrameTime, updateSimulationSpeedDisplaying,
          clickOnTile, initField };

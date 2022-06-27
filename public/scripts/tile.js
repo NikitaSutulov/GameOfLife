@@ -1,6 +1,7 @@
 'use strict';
 
 import { uiElements } from './uiElements.js';
+import { validateTile } from './validation.js';
 
 const TILE_SIZES = {
   'small': 18,
@@ -21,7 +22,15 @@ class Tile {
     this.isAlive = false;
     this.isBeingBorn = false;
     this.isAboutToDie = false;
-  }
+  };
+  invertTileState(){
+    validateTile(this);
+    if (!this.isAlive) {
+      this.isAlive = true;
+    } else {
+      this.isAlive = false;
+    }
+  };
 }
 
 export { TILE_SIZES, FIELD_SIZES, Tile };
