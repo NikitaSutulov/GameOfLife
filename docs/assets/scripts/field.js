@@ -139,7 +139,7 @@ const drawField = (fieldParams) => {
         aliveTilesCnt++;
       } else {
         const tileImage = new Image(fieldParams.tileSize, fieldParams.tileSize);
-        tileImage.src = '../docs/assets/images/tile.jpg';
+        tileImage.src = '../images/tile.jpg';
         uiElements.canvasContext.drawImage(tileImage,
           tile.posX * fieldParams.tileSize,
           tile.posY * fieldParams.tileSize
