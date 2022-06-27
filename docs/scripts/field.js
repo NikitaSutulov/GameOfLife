@@ -6,7 +6,7 @@ import { validateFieldLength, validateTile, validateGameField,
   validateIsGamePaused, validateCoords } from './validation.js';
 
 const createGameField = (fieldLength) => {
-  validateFieldLength()
+  validateFieldLength(fieldLength);
   const gameField = [];
   for (let i = 0; i < fieldLength; i++) {
     const gameFieldRow = [];
@@ -139,7 +139,7 @@ const drawField = (fieldParams) => {
         aliveTilesCnt++;
       } else {
         const tileImage = new Image(fieldParams.tileSize, fieldParams.tileSize);
-        tileImage.src = '../images/tile.jpg';
+        tileImage.src = '../docs/images/tile.jpg';
         uiElements.canvasContext.drawImage(tileImage,
           tile.posX * fieldParams.tileSize,
           tile.posY * fieldParams.tileSize
@@ -201,8 +201,8 @@ const clickOnTile = (fieldParams, x, y) => {
 const initField = (fieldParams) => {
   fieldParams.tileSizeSelectorValue = uiElements.tileSizeSelector.value;
   fieldParams.tileSize = TILE_SIZES[fieldParams.tileSizeSelectorValue];
-  fieldParams.fieldLength = FIELD_SIZES[fieldParams.tileSizeSelectorValue +
-                                        'Tiles'];
+  fieldParams.fieldLength = FIELD_SIZES[fieldParams.tileSizeSelectorValue
+                                        + 'Tiles'];
   fieldParams.gameField = createGameField(fieldParams.fieldLength);
 };
 
