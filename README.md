@@ -23,5 +23,6 @@ My realization includes three different game field sizes: with small, medium and
 
 Also you can change the game speed and color of the tiles.
 ![image](https://user-images.githubusercontent.com/64411952/175839971-d3bef28c-7517-410f-b164-c1b735ca6331.png)
+Finally, you can pause and reset the game field whenever you want.
 
 I hope that you will enjoy the game!
