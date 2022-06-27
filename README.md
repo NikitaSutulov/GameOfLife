@@ -31,3 +31,6 @@ How to launch:
 1) clone the repository on your PC;
 2) in command line enter "npx http-server" or "npm run launch";
 3) the game will be on localhost port 8080.
+
+Or you can run it right in the browser!
+The link is https://nikitasutulov.github.io/GameOfLife/
