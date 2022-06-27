@@ -16,7 +16,7 @@ All other live cells die in the next generation. Similarly, all other dead cells
 
 The game elements are usually called "cells", but I will call them "tiles".
 
-My realization includes three different game field sizes: with small, medium and large-sized tiles.
+My realization includes three different game field sizes: with small, medium and large-sized tiles (see the full pictures to see normal displayment).
 ![image](https://user-images.githubusercontent.com/64411952/175839891-72a98dd5-2c25-46c0-ad3e-eef3c8b26787.png)
 ![image](https://user-images.githubusercontent.com/64411952/175839920-7abbda18-2d80-4169-b5f7-e568c96a44b8.png)
 ![image](https://user-images.githubusercontent.com/64411952/175839948-1a2803e7-d57d-41f5-86f7-c6a6bd4051d1.png)
